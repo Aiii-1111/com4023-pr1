@@ -43,5 +43,9 @@ while lives > 0:
     #render screen contents
     pygame.display.update()
     clock.tick(60)
+    # handle quitting
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
 
 pygame.quit()
