@@ -1,12 +1,13 @@
-import pygame 
-
+import pygame
+import config
 ############### Setup
 # 4:3 aspect ratio in 1080p
-SCRN_HEIGHT = 768 
-SCRN_WIDTH = 1024
+# Updated this to use a config.py so variables can be accessed by any .py file
+SCRN_HEIGHT = config.SCRN_HEIGHT
+SCRN_WIDTH = config.SCRN_WIDTH
 # for placing score and life text
 TEXT_HORIZ_PADDING = 100
-TEXT_VERT_PADDING = 50 
+TEXT_VERT_PADDING = 50
 # colours
 BG_COLOUR = "#191919"
 TEXT_COLOUR = "#F1E9DA"
