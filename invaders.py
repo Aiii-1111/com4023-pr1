@@ -2,25 +2,60 @@ import pygame
 import numpy as np
 import config
 
+ROWS = config.INV_ROWS
+COLS = config.INV_COLS
+
+class Invader:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+    def set_pos(self, x, y):
+        self.x = grid_x + x * (invader_w + gap_x)
+        self.y = grid_y + y * (invader_h + gap_y)
+class Grid:
+    def __init__(self):
+        self.grid = np.empty((ROWS,COLS), dtype=object)
+        for r in range(ROWS):
+            for c in range(COLS):
+                self.grid[r,c] = Invader()
+                self.grid[r,c].set_pos(r,c)
+
+        self.direction = 1
+        self.speed = 1
+    def speedup(self):
+        self.speed += 1
+    def stdout(self):
+        print(self.grid)
+        for r in self.grid:
+            for c in r:
+                print(c.x, c.y)
+
+
+
+
 ### using the actual values for the real screen resolution and size of the invaders in the actual game
-grid_width_ratio = 256 / 176
-grid_height_ratio = 224 / 80
+### Screen Dimension / Grid Dimension
+# grid_width_ratio = 256 / 176
+# grid_height_ratio = 224 / 80
+pre_grid_width = config.SCRN_WIDTH * 0.6
+pre_grid_height = config.SCRN_HEIGHT * 0.25
 
-x_interv = (config.SCRN_WIDTH - 12) // 11
-y_interv = config.SCRN_HEIGHT // (2*5)
+# Calculates the size for the invaders based on how many chunks the grid needs to be divided into
+## assume gaps are 33% invader width
+invader_w = int(pre_grid_width / (COLS + (COLS - 1) * 0.3))
+invader_h = int(pre_grid_height / (ROWS + (ROWS - 1) * 0.3))
+# Calculates the size for the gaps inbetween invaders
+gap_x = int(invader_w * 0.3)
+gap_y = int(invader_h * 0.3)
+# Actual grid size based purely on invaders and gaps
+grid_width = (COLS * invader_w) + ((COLS - 1) * gap_x)
+grid_height = (ROWS * invader_h) + ((ROWS - 1) * gap_y)
 
-interv = min(x_interv,y_interv) # Finds the smallest default interval and uses that for both (usually y will be smallest)
+## x/y coords point to top left of grid
+grid_x = (config.SCRN_WIDTH - grid_width) // 2 # middle of the grid is middle of the screen
+grid_y = int(config.SCRN_HEIGHT * 0.1) # 10% down the screen
 
+# print(f"invader size: {invader_w}x{invader_h}, gaps: {gap_x}x{gap_y}, start position: ({grid_x}, {grid_y})")
 
-
-class invader:
-    def __init__(Self, i, j):
-        # Assuming top left is 0,0
-        Self.size = (16,16)
-class grid:
-    def __init__(Self):
-        Self.grid = np.full((5,11),"_")
-        Self.direction = 1
-        Self.speed = 1
-    def speedup(Self):
-        Self.speed += 1
+mygrid = Grid()
+mygrid.stdout()
