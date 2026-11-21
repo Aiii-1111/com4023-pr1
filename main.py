@@ -35,9 +35,13 @@ scoretext_rect = score_text.get_rect()
 scoretext_rect.center = (SCRN_WIDTH-TEXT_HORIZ_PADDING, TEXT_VERT_PADDING)
 
 # setting up barriers 
-
-b = barriers.Barrier(50,50)
-b.new_barrier(screen, SPRITE_COLOUR)
+barrier_x = SCRN_WIDTH/8
+barrier_y = SCRN_HEIGHT-200
+barrier_list = []
+for i in range(4):
+    barrier_list.append(barriers.Barrier(x=barrier_x,y=barrier_y))
+    barrier_list[i].new_barrier_cluster(screen, SPRITE_COLOUR)
+    barrier_x +=SCRN_WIDTH/5
 
 pygame.display.update()
 ############### Gameloop
@@ -47,7 +51,8 @@ while lives > 0:
     screen.blit(lives_text, livestext_rect)
     screen.blit(score_text, scoretext_rect)
     #barriers
-    b.draw_barrier(surface=screen,color=SPRITE_COLOUR)
+    for b in barrier_list:
+        b.draw_barrier(surface=screen,color=SPRITE_COLOUR)
     
 #render screen contents
     pygame.display.update()
