@@ -55,4 +55,26 @@ def game_loop():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
+    show_game_over(game_variables)
+
+# create text saying "GAME OVER" & retry button
+def show_game_over(game_variables):
+    gameover_text = game_font.render("GAME OVER", True, TEXT_COLOUR, BG_COLOUR)
+    gameover_rect = gameover_text.get_rect()
+    gameover_rect.center = (SCRN_WIDTH/2, SCRN_HEIGHT/2)
+    
+    while game_variables["lives"]==0:
+        screen.fill(BG_COLOUR)
+        screen.blit(gameover_text, gameover_rect)
+        pygame.display.update()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                
+    restart()
+
+# reset all text/ variables & restart game_loop
+def restart():
+    game_loop(config.GAME_VARS_INIT)
 game_loop()
