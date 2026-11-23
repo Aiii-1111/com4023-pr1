@@ -3,8 +3,8 @@ import config
 
 ############### Setup
 # 4:3 aspect ratio in 1080p
-SCRN_HEIGHT = 768 
-SCRN_WIDTH = 1024
+SCRN_HEIGHT = config.SCRN_HEIGHT 
+SCRN_WIDTH = config.SCRN_WIDTH
 # for placing score and life text
 TEXT_HORIZ_PADDING = 100
 TEXT_VERT_PADDING = 50 
@@ -61,11 +61,11 @@ def game_loop():
 
     show_game_over()
 
-# create text saying "GAME OVER" & retry button
+# create text saying "GAME OVER" & allow retry
 def show_game_over():
     gameover_text = game_font.render("GAME OVER\n\npress any key to retry", True, TEXT_COLOUR, BG_COLOUR)
     gameover_rect = gameover_text.get_rect()
-    gameover_rect.center = (SCRN_WIDTH/2, SCRN_HEIGHT/2)
+    gameover_rect.center = (int(SCRN_WIDTH/2), int(SCRN_HEIGHT/2))
     
     gameover = True
     
