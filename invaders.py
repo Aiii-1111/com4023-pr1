@@ -48,20 +48,33 @@ class Grid:
                 self.grid[r,c].set_pos(c,r)
         # self.stepx = invader_w + gap_x
         # self.stepy = invader_h + gap_y
-
-
         self.direction = 1
         self.speed = 1
         self.stepx = 0
         self.stepy = 0
-    def speedup(self):
-        self.speed += 1
-    def move(self):
-        self.stepx += 1
+        self.tick = 0
 
-        for a in self.grid:
-            for b in a:
-                b.set_pos(self.stepx, self.stepy)
+    def speedup(self):
+        if self.speed >= 3:
+            self.speed = 3
+        else:
+            self.speed += 1
+
+    def move(self):
+        for r in range(ROWS):
+            for c in range(COLS):
+                self.grid[r,c].set_pos(c + self.stepx,r + self.stepy)
+    def trigger_move(self, tick=0):
+
+        self.tick = tick
+        match (self.speed):
+            case 1:
+                if (self.tick % 55 == 0):
+                    self.stepx += 1
+                    self.move()
+
+
+
     def render(self):
         for a in self.grid:
             for b in a:

@@ -35,6 +35,7 @@ try:
     screen  = pygame.display.set_mode((SCRN_WIDTH,SCRN_HEIGHT))
     screen.fill(BG_COLOUR)
     pygame.display.update()
+    tickCount = 0
 
     # setting up text to show score & lives
     game_font = pygame.font.Font("assets/Silkscreen-Regular.ttf", 30)
@@ -53,16 +54,18 @@ try:
     ############### Gameloop
     running = True
     while running and lives > 0:
+        tickCount += 1
         # fill screen and add text
         screen.fill(BG_COLOUR)
         screen.blit(lives_text, livestext_rect)
         screen.blit(score_text, scoretext_rect)
 
         grid.render()
-        grid.move()
+        grid.trigger_move(tickCount)
+        grid.stdout()
         #render screen contents
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(60)
         # handle quitting
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
