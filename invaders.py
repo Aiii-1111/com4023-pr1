@@ -4,34 +4,7 @@ import config
 
 ROWS = config.INV_ROWS
 COLS = config.INV_COLS
-
-class Invader:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-    def set_pos(self, x, y):
-        self.x = grid_x + x * (invader_w + gap_x)
-        self.y = grid_y + y * (invader_h + gap_y)
-class Grid:
-    def __init__(self):
-        self.grid = np.empty((ROWS,COLS), dtype=object)
-        for r in range(ROWS):
-            for c in range(COLS):
-                self.grid[r,c] = Invader()
-                self.grid[r,c].set_pos(r,c)
-
-        self.direction = 1
-        self.speed = 1
-    def speedup(self):
-        self.speed += 1
-    def stdout(self):
-        print(self.grid)
-        for r in self.grid:
-            for c in r:
-                print(c.x, c.y)
-
-
-
+screen = pygame.display.set_mode((config.SCRN_WIDTH, config.SCRN_HEIGHT))
 
 ### using the actual values for the real screen resolution and size of the invaders in the actual game
 ### Screen Dimension / Grid Dimension
@@ -55,7 +28,56 @@ grid_height = (ROWS * invader_h) + ((ROWS - 1) * gap_y)
 grid_x = (config.SCRN_WIDTH - grid_width) // 2 # middle of the grid is middle of the screen
 grid_y = int(config.SCRN_HEIGHT * 0.1) # 10% down the screen
 
-# print(f"invader size: {invader_w}x{invader_h}, gaps: {gap_x}x{gap_y}, start position: ({grid_x}, {grid_y})")
+class Invader:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+    def set_pos(self, x, y):
+        self.x = grid_x + x * (invader_w + gap_x)
+        self.y = grid_y + y * (invader_h + gap_y)
+    def render(self):
+        pygame.draw.circle(screen, pygame.Color(255,255,255,255), (self.x, self.y), invader_h, width=0)
 
-mygrid = Grid()
-mygrid.stdout()
+
+class Grid:
+    def __init__(self):
+        self.grid = np.empty((ROWS,COLS), dtype=object)
+        for r in range(ROWS):
+            for c in range(COLS):
+                self.grid[r,c] = Invader()
+                self.grid[r,c].set_pos(c,r)
+        # self.stepx = invader_w + gap_x
+        # self.stepy = invader_h + gap_y
+
+
+        self.direction = 1
+        self.speed = 1
+        self.stepx = 0
+        self.stepy = 0
+    def speedup(self):
+        self.speed += 1
+    def move(self):
+        self.stepx += 1
+
+        for a in self.grid:
+            for b in a:
+                b.set_pos(self.stepx, self.stepy)
+    def render(self):
+        for a in self.grid:
+            for b in a:
+                b.render()
+    def stdout(self):
+        print(self.grid)
+        for r in self.grid:
+            for c in r:
+                print(c.x, c.y)
+
+
+
+
+
+
+# print(f"invader size: {invader_w}x{invader_h}, gaps: {gap_x}x{gap_y}, start position: ({grid_x}, {grid_y})")
+#
+# mygrid = Grid()
+# mygrid.stdout()
