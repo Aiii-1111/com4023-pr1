@@ -39,8 +39,13 @@ def update_game_text(game_variables):
 
 ############### Gameloop
 def game_loop():
-    game_variables = config.GAME_VARS_INIT
+    
+    game_variables = {
+    "lives":3,
+    "score":0}
+    
     lives_text, livestext_rect, score_text, scoretext_rect = update_game_text(game_variables)
+    
     while game_variables["lives"] > 0:
         # fill screen and add text
         screen.fill(BG_COLOUR)
@@ -49,21 +54,22 @@ def game_loop():
         #render screen contents
         pygame.display.update()
         clock.tick(60)
-        game_variables["lives"]=0
         # handle quitting
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-    show_game_over(game_variables)
+    show_game_over()
 
 # create text saying "GAME OVER" & retry button
-def show_game_over(game_variables):
-    gameover_text = game_font.render("GAME OVER", True, TEXT_COLOUR, BG_COLOUR)
+def show_game_over():
+    gameover_text = game_font.render("GAME OVER\n\npress any key to retry", True, TEXT_COLOUR, BG_COLOUR)
     gameover_rect = gameover_text.get_rect()
     gameover_rect.center = (SCRN_WIDTH/2, SCRN_HEIGHT/2)
     
-    while game_variables["lives"]==0:
+    gameover = True
+    
+    while gameover:
         screen.fill(BG_COLOUR)
         screen.blit(gameover_text, gameover_rect)
         pygame.display.update()
@@ -71,10 +77,12 @@ def show_game_over(game_variables):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                
+            if event.type == pygame.KEYDOWN:
+                gameover = False
     restart()
-
+    
 # reset all text/ variables & restart game_loop
 def restart():
-    game_loop(config.GAME_VARS_INIT)
+    game_loop()
+
 game_loop()

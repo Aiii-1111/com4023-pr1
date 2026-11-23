@@ -2,7 +2,3 @@ SCRN_HEIGHT = 768
 SCRN_WIDTH = 1024
 INV_ROWS = 5
 INV_COLS = 11
-GAME_VARS_INIT = {
-    "lives":3,
-    "score":0
-}
