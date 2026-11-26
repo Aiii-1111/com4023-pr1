@@ -62,10 +62,10 @@ class Grid:
             self.speed += 1
 
     def move(self):
-        if (self.moveCount == 4) or ((self.moveCount - 4) % 8 == 0):
+        if (self.moveCount == 4) or ((self.moveCount - 4) % 8 == 0): ## Only when the invader reaches the edge will the group go down
             self.stepy += 1
-            self.stepx -= 1 * self.direction
-            self.direction = -1 * self.direction
+            self.stepx -= 1 * self.direction # This is needed to stop the invader from moving across the x axis when going down...
+            self.direction = -1 * self.direction ## This changes the direction when going down
         for r in range(ROWS):
             for c in range(COLS):
                 self.grid[r,c].set_pos(c + self.stepx,r + self.stepy)
