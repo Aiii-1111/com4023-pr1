@@ -90,7 +90,7 @@ def game_loop():
 
         grid.render()
         grid.trigger_move(tickCount)
-        grid.stdout()
+        # grid.stdout()
         #render screen contents
         pygame.display.update()
         clock.tick(60)

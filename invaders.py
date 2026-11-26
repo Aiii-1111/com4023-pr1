@@ -53,6 +53,7 @@ class Grid:
         self.stepx = 0
         self.stepy = 0
         self.tick = 0
+        self.moveCount = 0
 
     def speedup(self):
         if self.speed >= 3:
@@ -61,16 +62,23 @@ class Grid:
             self.speed += 1
 
     def move(self):
+        if (self.moveCount == 4) or ((self.moveCount - 4) % 8 == 0):
+            self.stepy += 1
+            self.stepx -= 1 * self.direction
+            self.direction = -1 * self.direction
         for r in range(ROWS):
             for c in range(COLS):
                 self.grid[r,c].set_pos(c + self.stepx,r + self.stepy)
+        self.moveCount += 1
+        print(f"move count is {self.moveCount}")
     def trigger_move(self, tick=0):
 
         self.tick = tick
         match (self.speed):
             case 1:
                 if (self.tick % 55 == 0):
-                    self.stepx += 1
+                    self.stepx += (1 * self.direction)
+                    print(f"stepx = {self.stepx}")
                     self.move()
 
 
