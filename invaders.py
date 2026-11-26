@@ -36,7 +36,7 @@ class Invader:
         self.x = grid_x + x * (invader_w + gap_x)
         self.y = grid_y + y * (invader_h + gap_y)
     def render(self):
-        pygame.draw.circle(screen, pygame.Color(255,255,255,255), (self.x, self.y), invader_h, width=0)
+        pygame.draw.circle(screen, pygame.Color(255,255,255,255), (self.x, self.y), invader_h / 4, width=0)
 
 
 class Grid:
