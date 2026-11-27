@@ -1,12 +1,13 @@
 import pygame
 
+import config
 from bullet import Bullet
 
 
 class Player:
     def __init__(self):
-        self.x = 375
-        self.y = 540
+        self.x = config.SCRN_WIDTH / 2
+        self.y = config.SCRN_HEIGHT - 50
         self.speed = 2.5
         self.bullets = []
 
@@ -29,8 +30,12 @@ class Player:
                 self.bullets.remove(bullet)
 
     def draw(self, screen):
-        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.y, 50, 30))
-        pygame.draw.rect(screen, (0, 255, 0), (self.x + 15, self.y - 10, 20, 10))
-        pygame.draw.rect(screen, (0, 255, 0), (self.x + 23, self.y - 20, 4, 10))
+        pygame.draw.rect(screen, config.SPRITE_COLOUR, (self.x, self.y, 50, 30))
+        pygame.draw.rect(
+            screen, config.SPRITE_COLOUR, (self.x + 15, self.y - 10, 20, 10)
+        )
+        pygame.draw.rect(
+            screen, config.SPRITE_COLOUR, (self.x + 23, self.y - 20, 4, 10)
+        )
         for bullet in self.bullets:
             bullet.draw(screen)
