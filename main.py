@@ -1,19 +1,10 @@
 import pygame
 
-############### Setup
-# 4:3 aspect ratio in 1080p
-SCRN_HEIGHT = 768
-SCRN_WIDTH = 1024
-# for placing score and life text
-TEXT_HORIZ_PADDING = 100
-TEXT_VERT_PADDING = 50
-# colours in RGB format
-BG_COLOUR = (25, 25, 25)  # Hex: #191919
-TEXT_COLOUR = (241, 233, 218)  # Hex: #F1E9DA
-SPRITE_COLOUR = (5, 241, 64)  # Hex: #05F140
-
 import barriers
+
+# import bullet
 import config
+from player import Player
 
 ############### Setup
 # 4:3 aspect ratio in 1080p
@@ -25,7 +16,7 @@ TEXT_VERT_PADDING = 50
 # colours
 BG_COLOUR = "#191919"
 TEXT_COLOUR = "#F1E9DA"
-SPRITE_COLOUR = "#05F140"
+SPRITE_COLOUR = config.SPRITE_COLOUR
 
 # initialise pygame and screen
 pygame.init()
@@ -55,10 +46,6 @@ def update_game_text(game_variables):
     return lives_text, livestext_rect, score_text, scoretext_rect
 
 
-score_text = game_font.render(f"Score: {score}", True, TEXT_COLOUR, BG_COLOUR)
-scoretext_rect = score_text.get_rect()
-scoretext_rect.center = (SCRN_WIDTH - TEXT_HORIZ_PADDING, TEXT_VERT_PADDING)
-
 pygame.display.update()
 
 
@@ -66,6 +53,7 @@ pygame.display.update()
 def game_loop():
 
     game_variables = {"lives": 3, "score": 0}
+    player = Player()
 
     # text setup
     lives_text, livestext_rect, score_text, scoretext_rect = update_game_text(
@@ -86,9 +74,20 @@ def game_loop():
         screen.fill(BG_COLOUR)
         screen.blit(lives_text, livestext_rect)
         screen.blit(score_text, scoretext_rect)
+
+        # draw and move player
+        player.move()
+        player.draw(screen)
+
+        # draw and move bullets
+        for bullet in player.bullets:
+            bullet.move()
+            bullet.draw(screen)
+
         # draw barriers
         for b in barrier_list:
             b.draw_barrier(surface=screen)
+
         # render screen contents
         pygame.display.update()
         clock.tick(60)
@@ -96,6 +95,10 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+            # allow player to shoot
+            if event.type == pygame.KEYDOWN:  # noqa: SIM102
+                if event.key == pygame.K_SPACE:
+                    player.shoot()
 
     show_game_over()
 
