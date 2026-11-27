@@ -1,5 +1,6 @@
 import pygame
 
+import barriers
 import config
 
 ############### Setup
@@ -20,7 +21,6 @@ pygame.display.set_caption("Space Invaders")
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((SCRN_WIDTH, SCRN_HEIGHT))
 screen.fill(BG_COLOUR)
-pygame.display.update()
 
 game_font = pygame.font.Font("assets/Silkscreen-Regular.ttf", 30)
 
@@ -48,15 +48,28 @@ def game_loop():
 
     game_variables = {"lives": 3, "score": 0}
 
+    # text setup
     lives_text, livestext_rect, score_text, scoretext_rect = update_game_text(
         game_variables
     )
+
+    # setting up barriers
+    barrier_x = SCRN_WIDTH / 8
+    barrier_y = SCRN_HEIGHT - 200
+    barrier_list = []
+    for i in range(4):
+        barrier_list.append(barriers.Barrier(x=barrier_x, y=barrier_y))
+        barrier_list[i].new_barrier_cluster()
+        barrier_x += SCRN_WIDTH / 5
 
     while game_variables["lives"] > 0:
         # fill screen and add text
         screen.fill(BG_COLOUR)
         screen.blit(lives_text, livestext_rect)
         screen.blit(score_text, scoretext_rect)
+        # draw barriers
+        for b in barrier_list:
+            b.draw_barrier(surface=screen)
         # render screen contents
         pygame.display.update()
         clock.tick(60)
