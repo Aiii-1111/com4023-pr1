@@ -32,28 +32,58 @@ class Invader:
     def __init__(self):
         self.x = 0
         self.y = 0
+        self.dead = False
     def set_pos(self, x, y):
         self.x = grid_x + x * (invader_w + gap_x)
         self.y = grid_y + y * (invader_h + gap_y)
     def render(self):
         pygame.draw.circle(screen, pygame.Color(255,255,255,255), (self.x, self.y), invader_h / 4, width=0)
+class Invader1(Invader):
+    def __init__(self):
+        super().__init__()
+        self.points = 10
+    def render(self):
+        pygame.draw.circle(screen,pygame.Color(255,0,0), (self.x, self.y), invader_h / 4, width=0)
+
+class Invader2(Invader):
+    def __init__(self):
+        super().__init__()
+        self.points = 20
+    def render(self):
+        pygame.draw.circle(screen,pygame.Color(0,255,0), (self.x, self.y), invader_h / 4, width=0)
+
+class Invader3(Invader):
+    def __init__(self):
+        super().__init__()
+        self.points = 30
+    def render(self):
+        pygame.draw.circle(screen,pygame.Color(0,0,255), (self.x, self.y), invader_h / 4, width=0)
 
 
 class Grid:
     def __init__(self):
-        self.grid = np.empty((ROWS,COLS), dtype=object)
-        for r in range(ROWS):
-            for c in range(COLS):
-                self.grid[r,c] = Invader()
-                self.grid[r,c].set_pos(c,r)
-        # self.stepx = invader_w + gap_x
-        # self.stepy = invader_h + gap_y
         self.direction = 1
         self.speed = 1
         self.stepx = 0
-        self.stepy = 0
+        self.stepy = 1 ## I am moving this down one just because the grid starts too high
         self.tick = 0
         self.moveCount = 0
+        self.grid = np.empty((ROWS,COLS), dtype=object)
+        for r in range(1):
+            for c in range(COLS):
+                self.grid[r,c] = Invader3()
+                self.grid[r,c].set_pos(c + self.stepx,r + self.stepy)
+        for r in range(1,3):
+            for c in range(COLS):
+                self.grid[r,c] = Invader2()
+                self.grid[r,c].set_pos(c + self.stepx,r + self.stepy)
+        for r in range(3,5):
+            for c in range(COLS):
+                self.grid[r,c] = Invader1()
+                self.grid[r,c].set_pos(c + self.stepx,r + self.stepy)
+        # self.stepx = invader_w + gap_x
+        # self.stepy = invader_h + gap_y
+
 
     def speedup(self):
         if self.speed >= 3:
@@ -62,9 +92,9 @@ class Grid:
             self.speed += 1
 
     def move(self):
-        if (self.moveCount == 4) or ((self.moveCount - 4) % 8 == 0): ## Only when the invader reaches the edge will the group go down
+        if (self.moveCount == 8) or ((self.moveCount - 8) % 16 == 0): ## Only when the invader reaches the edge will the group go down
             self.stepy += 1
-            self.stepx -= 1 * self.direction # This is needed to stop the invader from moving across the x axis when going down...
+            self.stepx -= 0.5 * self.direction # This is needed to stop the invader from moving across the x axis when going down...
             self.direction = -1 * self.direction ## This changes the direction when going down
         for r in range(ROWS):
             for c in range(COLS):
@@ -77,7 +107,7 @@ class Grid:
         match (self.speed):
             case 1:
                 if (self.tick % 55 == 0):
-                    self.stepx += (1 * self.direction)
+                    self.stepx += (0.5 * self.direction)
                     print(f"stepx = {self.stepx}")
                     self.move()
 
