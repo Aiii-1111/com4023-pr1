@@ -1,6 +1,9 @@
 import pygame
 import numpy as np
 import config
+import os
+
+
 
 ROWS = config.INV_ROWS
 COLS = config.INV_COLS
@@ -36,28 +39,48 @@ class Invader:
     def set_pos(self, x, y):
         self.x = grid_x + x * (invader_w + gap_x)
         self.y = grid_y + y * (invader_h + gap_y)
-    def render(self):
+    def render(self, screen_in):
+        # self.rect.center = (self.x, self.y)
         pygame.draw.circle(screen, pygame.Color(255,255,255,255), (self.x, self.y), invader_h / 4, width=0)
 class Invader1(Invader):
     def __init__(self):
         super().__init__()
         self.points = 10
-    def render(self):
-        pygame.draw.circle(screen,pygame.Color(255,0,0), (self.x, self.y), invader_h / 4, width=0)
+        self.img = pygame.image.load(os.path.join('assets/Invaders/enemy1.png'))
+        self.rect = self.img.get_rect()
+        print(f"{self.rect}")
+    def render(self, screen_in):
+        self.rect.center = (self.x, self.y)
+        self.img = pygame.transform.scale(self.img, (42, 42))
+        screen_in.blit(self.img, self.rect)
+        # pygame.draw.circle(screen,pygame.Color(255,0,0), (self.x, self.y), invader_h / 4, width=0)
+
 
 class Invader2(Invader):
     def __init__(self):
         super().__init__()
         self.points = 20
-    def render(self):
-        pygame.draw.circle(screen,pygame.Color(0,255,0), (self.x, self.y), invader_h / 4, width=0)
+        self.img = pygame.image.load(os.path.join('assets/Invaders/enemy2.png'))
+        self.rect = self.img.get_rect()
+    def render(self, screen_in):
+        self.rect.center = (self.x, self.y)
+        self.img = pygame.transform.scale(self.img, (42, 42))
+        screen_in.blit(self.img, self.rect)
+        # pygame.draw.circle(screen,pygame.Color(0,255,0), (self.x, self.y), invader_h / 4, width=0)
+
 
 class Invader3(Invader):
     def __init__(self):
         super().__init__()
-        self.points = 30
-    def render(self):
-        pygame.draw.circle(screen,pygame.Color(0,0,255), (self.x, self.y), invader_h / 4, width=0)
+        self.points = 40
+        self.img = pygame.image.load(os.path.join('assets/Invaders/enemy3.png'))
+        self.rect = self.img.get_rect()
+    def render(self, screen_in):
+        self.rect.center = (self.x, self.y)
+        self.img = pygame.transform.scale(self.img, (42, 42))
+        screen_in.blit(self.img, self.rect)
+        # pygame.draw.circle(screen,pygame.Color(0,0,255), (self.x, self.y), invader_h / 4, width=0)
+
 
 
 class Grid:
@@ -113,10 +136,10 @@ class Grid:
 
 
 
-    def render(self):
+    def render(self, screen_in):
         for a in self.grid:
             for b in a:
-                b.render()
+                b.render(screen_in)
     def stdout(self):
         print(self.grid)
         for r in self.grid:

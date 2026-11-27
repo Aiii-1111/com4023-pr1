@@ -100,7 +100,7 @@ def game_loop():
         screen.blit(lives_text, livestext_rect)
         screen.blit(score_text, scoretext_rect)
 
-        grid.render()
+        grid.render(screen)
         grid.trigger_move(tickCount)
         # grid.stdout()
         #render screen contents
